@@ -21,8 +21,13 @@ export const env = createEnv({
       // VERCEL_URL doesn't include `https` so it cant be validated as a URL
       process.env.VERCEL ? z.string() : z.string().url()
     ),
-    DISCORD_CLIENT_ID: z.string(),
-    DISCORD_CLIENT_SECRET: z.string(),
+    PRIMARY_USER_USERNAME: z.string(),
+    PRIMARY_USER_PASSWORD: z.string(),
+    SECONDARY_USER_USERNAME: z.string(),
+    SECONDARY_USER_PASSWORD: z.string(),
+    KP_HOST: z.string(),
+    KP_AUTH_TOKEN: z.string(),
+    KP_CLIENT_ID: z.number(),
   },
 
   /**
@@ -42,8 +47,14 @@ export const env = createEnv({
     NODE_ENV: process.env.NODE_ENV,
     NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
     NEXTAUTH_URL: process.env.NEXTAUTH_URL,
-    DISCORD_CLIENT_ID: process.env.DISCORD_CLIENT_ID,
-    DISCORD_CLIENT_SECRET: process.env.DISCORD_CLIENT_SECRET,
+    PRIMARY_USER_USERNAME: process.env.PRIMARY_USER_USERNAME,
+    PRIMARY_USER_PASSWORD: process.env.PRIMARY_USER_PASSWORD,
+    SECONDARY_USER_USERNAME: process.env.SECONDARY_USER_USERNAME,
+    SECONDARY_USER_PASSWORD: process.env.SECONDARY_USER_PASSWORD,
+    KP_HOST: process.env.KP_HOST,
+    KP_AUTH_TOKEN: process.env.KP_AUTH_TOKEN,
+    KP_CLIENT_ID: parseInt(process.env.KP_CLIENT_ID ?? "0"),
+
     // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
   },
   /**

@@ -1,14 +1,13 @@
-import Link from "next/link";
-
 import { CreatePost } from "~/app/_components/create-post";
 import { getServerAuthSession } from "~/server/auth";
 import { api } from "~/trpc/server";
-import { ListResearchContexts } from "./_components/list-research-contexts";
-
+import { env } from "~/env";
+import { redirect } from "next/navigation";
 export default async function Home() {
-  const hello = await api.post.hello({ text: "from tRPC" });
   const session = await getServerAuthSession();
-
+  if (!session?.user) {
+    redirect("/auth/login");
+  };
   return (
         <ListResearchContexts />
   );
@@ -30,5 +29,22 @@ async function CrudShowcase() {
 
       <CreatePost />
     </div>
+  );
+}
+
+async function ListResearchContexts() {
+  const session = await getServerAuthSession();
+  if (!session?.user) return null;
+
+  const researchContexts = await api.researchContext.list(
+    { id: env.KP_CLIENT_ID, xAuthToken: env.KP_AUTH_TOKEN },
+  );
+
+  return (
+    // <ListResearchContextsPage researchContexts={researchContexts}
+    // onAddContextClick={() => {console.log('add context clicked')}} // TODO: implement server-side as a mutation
+    // kernelPlancksterHost={env.KP_HOST}
+    //  />
+    <div>Hello</div>
   );
 }

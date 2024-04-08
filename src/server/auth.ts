@@ -3,7 +3,7 @@ import {
   type DefaultSession,
   type NextAuthOptions,
 } from "next-auth";
-import DiscordProvider from "next-auth/providers/discord";
+import CredentialsProvider from "next-auth/providers/credentials";
 
 import { env } from "~/env";
 
@@ -23,10 +23,30 @@ declare module "next-auth" {
   }
 
   // interface User {
+  //   id: string;
   //   // ...other properties
   //   // role: UserRole;
   // }
 }
+
+export type TCredentials = {
+  id: string;
+  username: string;
+  password: string;
+};
+
+const VALID_CREDENTIALS = [
+  { 
+      id: "1",
+      username: env.PRIMARY_USER_USERNAME || 'admin',
+      password: env.PRIMARY_USER_PASSWORD || '3987anjknk2309^&67'
+  },
+  {
+      id: "2",
+      username: env.SECONDARY_USER_USERNAME || 'user',
+      password: env.SECONDARY_USER_PASSWORD || '3987anjknk2309^&67'
+  }
+] as TCredentials[];
 
 /**
  * Options for NextAuth.js used to configure adapters, providers, callbacks, etc.
@@ -43,10 +63,30 @@ export const authOptions: NextAuthOptions = {
       },
     }),
   },
+  pages: {
+    signIn: "/auth/signin",
+    error: "/auth/error",
+  },
   providers: [
-    DiscordProvider({
-      clientId: env.DISCORD_CLIENT_ID,
-      clientSecret: env.DISCORD_CLIENT_SECRET,
+    CredentialsProvider({
+      type: "credentials",
+      credentials: {
+        id: { label: "ID", type: "text" },
+        username: { label: "Username", type: "text" },
+        password: { label: "Password", type: "password" },
+      },
+      authorize: async (credentials, req) => {
+        const { username, password } = credentials as { username: string, password: string };
+        for (const validCredential of VALID_CREDENTIALS) {
+          if (validCredential.username === username && validCredential.password === password) {
+            return Promise.resolve({
+              id: validCredential.id,
+              name: username,
+            });
+          }
+        }
+        throw new Error('Invalid credentials');
+      },
     }),
     /**
      * ...add more providers here.
