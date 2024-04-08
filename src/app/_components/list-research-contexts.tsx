@@ -4,7 +4,6 @@ import { type ResearchContext } from "node_modules/@maany_shr/kernel-planckster-
 
 export type ListResearchContextsPageProps = {
   researchContexts: ResearchContext[];
-  onAddContextClick: () => void;
   kernelPlancksterHost: string;
 };
 
@@ -12,7 +11,7 @@ export function ListResearchContextsPage(props: ListResearchContextsPageProps) {
   return (
     <ResearchContextPage
       cards={props.researchContexts}
-      onAddContextClick={props.onAddContextClick}
+      onAddContextClick={() => {console.log("Add context clicked")}}
       apiUrl={props.kernelPlancksterHost}
     />
   );

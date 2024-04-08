@@ -3,6 +3,7 @@ import { getServerAuthSession } from "~/server/auth";
 import { api } from "~/trpc/server";
 import { env } from "~/env";
 import { redirect } from "next/navigation";
+import { ListResearchContextsPage } from "./_components/list-research-contexts";
 export default async function Home() {
   const session = await getServerAuthSession();
   if (!session?.user) {
@@ -41,10 +42,8 @@ async function ListResearchContexts() {
   );
 
   return (
-    // <ListResearchContextsPage researchContexts={researchContexts}
-    // onAddContextClick={() => {console.log('add context clicked')}} // TODO: implement server-side as a mutation
-    // kernelPlancksterHost={env.KP_HOST}
-    //  />
-    <div>Hello</div>
+    <ListResearchContextsPage researchContexts={researchContexts}
+    kernelPlancksterHost={env.KP_HOST}
+     />
   );
 }
