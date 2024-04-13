@@ -66,9 +66,24 @@ LogFormat "%h\t%t\t%{X-DAD-Forwarded-For}i\t%T\t%D\t\"%{X-DAD-Auth-Token}i\"\t%{
  ServerName {{ HOSTNAME }}:80
 {% endif %}
  {{ common_virtual_host_config(80) }}
+ {% if enable_ssl == 'True' %}
  Redirect permanent / https://{{ HOSTNAME }}/
+ {% else %}
+ ProxyPass / http://localhost:3000/
+ ProxyPassReverse / http://localhost:3000/
+ ProxyPassReverseCookieDomain "{{ HOSTNAME }}:3000" "{{ HOSTNAME }}:443"
+ RequestHeader set Upgrade %{HTTP:Upgrade}e
+ RequestHeader set Connection "upgrade"
+ RequestHeader set Host %{Host}e
+ RequestHeader set X-Real-IP %{Remote_Addr}e
+ RequestHeader set X-Forwarded-For %{Proxy_Add_X_Forwarded_For}e
+ RequestHeader set X-Forwarded-Proto %{Scheme}e
+ RequestHeader set X-Forwarded-Host %{Host}e
+ RequestHeader set X-Forwarded-Port %{Server_Port}e
+ {% endif %}
 </VirtualHost>
 
+{% if enable_ssl == 'True' %}
 <VirtualHost *:443>
  {{ common_virtual_host_config(port=443) }}
  
@@ -84,5 +99,6 @@ LogFormat "%h\t%t\t%{X-DAD-Forwarded-For}i\t%T\t%D\t\"%{X-DAD-Auth-Token}i\"\t%{
  RequestHeader set X-Forwarded-Host %{Host}e
  RequestHeader set X-Forwarded-Port %{Server_Port}e
 </VirtualHost>
+{% endif %}
 
 
