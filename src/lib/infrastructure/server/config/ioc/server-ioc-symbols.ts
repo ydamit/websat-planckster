@@ -12,5 +12,5 @@ export const TRPC = {
 
 export const GATEWAYS = {
     AUTH_GATEWAY: Symbol.for('AUTH_GATEWAY'),
-    TRPC: Symbol.for('TRPC'),
+    AGENT_GATEWAY: Symbol.for('AGENT_GATEWAY'),
 }

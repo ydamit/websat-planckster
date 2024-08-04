@@ -29,3 +29,12 @@ export type BaseDTO<TSuccessData, TErrorData> = z.infer<
     ReturnType<typeof DTOSchemaFactory<TSuccessData, TErrorData>>
 >;
 
+
+/**
+ * Defines the schema for the BaseErrorDTO object.
+ */
+export const BaseErrorDTOSchema = z.object({
+    code: z.string(),
+    message: z.string(),
+    details: z.string().optional(),
+});
