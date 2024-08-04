@@ -1,12 +1,13 @@
 import "reflect-metadata";
 import { Container } from "inversify";
-import { CONSTANTS, GATEWAYS, TRPC } from "./server-ioc-symbols";
+import { CONSTANTS, GATEWAYS, REPOSITORY, TRPC } from "./server-ioc-symbols";
 import { authOptions } from "~/lib/infrastructure/server/config/auth/next-auth-config";
 import type AuthGatewayOutputPort from "~/lib/core/ports/secondary/auth-gateway-output-port";
 import NextAuthGateway from "~/lib/infrastructure/server/gateway/next-auth-gateway";
 import { appRouter } from "~/lib/infrastructure/server/trpc/app-router";
 import { api } from "~/lib/infrastructure/server/trpc/server-api";
-import OpenAIAgentGateway from "../../gateway/openai-agent-gateway";
+import OpenAIAgentGateway from "~/lib/infrastructure/server/gateway/openai-agent-gateway";
+import KernelPlancksterServerSideFileRepository from "~/lib/infrastructure/server/repository/file-repository";
 
 
 const serverContainer = new Container();
@@ -25,6 +26,9 @@ serverContainer.bind<AuthGatewayOutputPort>(GATEWAYS.AUTH_GATEWAY).to(NextAuthGa
 
 /**AgentGatewayOutputPort */
 serverContainer.bind(GATEWAYS.AGENT_GATEWAY).toConstantValue(OpenAIAgentGateway);
+
+/** File Repository */
+serverContainer.bind(REPOSITORY.KP_FILE_REPOSITORY).toConstantValue(KernelPlancksterServerSideFileRepository);
 
 export default serverContainer;
 
