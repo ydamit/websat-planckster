@@ -5,6 +5,8 @@
 await import("./src/env.js");
 
 /** @type {import("next").NextConfig} */
-const config = {};
+const config = {
+    transpilePackages: ['@t3-oss/env-nextjs', '@t3-oss/env-core'],
+};
 
 export default config;
