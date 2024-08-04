@@ -26,7 +26,6 @@ export function DummySendMessage(
                 onClick={() => {
                     sendMessageMutation.mutate({
                         conversationId: props.conversationId,
-                        xAuthToken: props.xAuthToken,
                         messageContent: props.messageContent,
                     });
                 }}

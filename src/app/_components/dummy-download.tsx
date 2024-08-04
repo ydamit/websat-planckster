@@ -5,9 +5,7 @@ import type { TClientComponentAPI } from "~/lib/infrastructure/client/trpc/react
 import { TRPC } from "~/lib/infrastructure/client/config/ioc/client-ioc-symbols";
 
 export type DummyDownloadProps = {
-    clientId: number,
     protocol: string,
-    xAuthToken: string,
     relativePath: string,
     localFilePath: string,
 };
@@ -25,11 +23,10 @@ export function DummyDownloadComponent(
     return (
         <div>
             <button
+                className={"border-2 border-neutral-950 rounded-md"} 
                 onClick={() => {
                     downloadSourceDataMutation.mutate({
-                        clientId: props.clientId,
                         protocol: props.protocol,
-                        xAuthToken: props.xAuthToken,
                         relativePath: props.relativePath,
                         localFilePath: props.localFilePath,
                     });

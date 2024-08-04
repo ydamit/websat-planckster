@@ -27,7 +27,6 @@ async function ListMessages({ conv_id }: { conv_id: string }) {
   const conv_id_int = parseInt(conv_id);
   const messages = await api.kernel.message.list({
     conversationId: conv_id_int,
-    xAuthToken: env.KP_AUTH_TOKEN,
   });
 
   //const cmProps: ChatMessageProps[] = []

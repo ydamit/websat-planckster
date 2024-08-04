@@ -1,25 +1,27 @@
 import { z } from "zod";
 
-
 import { ClientService as sdk } from "@maany_shr/kernel-planckster-sdk-ts";
-
 import { downloadFile, uploadFile } from "~/lib/infrastructure/server/repository/file-repository";
-
-import { env } from "~/env";
 import { createTRPCRouter, protectedProcedure } from "../server";
+import serverContainer from "../../config/ioc/server-container";
+import type AuthGatewayOutputPort from "~/lib/core/ports/secondary/auth-gateway-output-port";
+import { GATEWAYS } from "../../config/ioc/server-ioc-symbols";
 
 export const sourceDataRouter = createTRPCRouter({
+
     listForClient: protectedProcedure
-    .input(
-        z.object({
-            clientId: z.number(),
-            xAuthToken: z.string(),
-        }),
-    )
-    .query(async ({ input }) => {
+    .query(async () => {
+
+        const authGateway = serverContainer.get<AuthGatewayOutputPort>(GATEWAYS.AUTH_GATEWAY);
+        const kpCredentialsDTO = await authGateway.extractKPCredentials();
+
+        if (!kpCredentialsDTO.success) {
+            return [];
+        }
+
         const viewModel = await sdk.listSourceData({
-            id: input.clientId ?? env.KP_CLIENT_ID,
-            xAuthToken: input.xAuthToken || env.KP_AUTH_TOKEN,
+            id: kpCredentialsDTO.data.clientID, 
+            xAuthToken: kpCredentialsDTO.data.xAuthToken,
         });
         if(viewModel.status) {
             const sources = viewModel.source_data_list
@@ -33,17 +35,23 @@ export const sourceDataRouter = createTRPCRouter({
     create: protectedProcedure
       .input(
         z.object({
-            clientId: z.number(),
             protocol: z.string(),
-            xAuthToken: z.string(),
             relativePath: z.string(), // TODO: validate that's a path that KP likes
             sourceDataName: z.string(),
             localFilePath: z.string(),
         }),
       )
       .mutation(async ({ input }) => {
-        const clientID = input.clientId ?? env.KP_CLIENT_ID
-        const authToken = input.xAuthToken || env.KP_AUTH_TOKEN
+
+        const authGateway = serverContainer.get<AuthGatewayOutputPort>(GATEWAYS.AUTH_GATEWAY);
+        const kpCredentialsDTO = await authGateway.extractKPCredentials();
+
+        if (!kpCredentialsDTO.success) {
+            return [];
+        }
+
+        const clientID = kpCredentialsDTO.data.clientID
+        const authToken = kpCredentialsDTO.data.xAuthToken
 
         // 1. Use KP to get signed URL
         const signedUrlViewModel = await sdk.getClientDataForUpload({
@@ -91,16 +99,22 @@ export const sourceDataRouter = createTRPCRouter({
     download: protectedProcedure
       .input(
         z.object({
-            clientId: z.number(),
             protocol: z.string(),
-            xAuthToken: z.string(),
             relativePath: z.string(),
             localFilePath: z.string(),
         }),
       )
       .mutation(async ({ input }) => {
-        const clientID = input.clientId ?? env.KP_CLIENT_ID
-        const authToken = input.xAuthToken || env.KP_AUTH_TOKEN
+
+        const authGateway = serverContainer.get<AuthGatewayOutputPort>(GATEWAYS.AUTH_GATEWAY);
+        const kpCredentialsDTO = await authGateway.extractKPCredentials();
+
+        if (!kpCredentialsDTO.success) {
+            return [];
+        }
+
+        const clientID = kpCredentialsDTO.data.clientID
+        const authToken = kpCredentialsDTO.data.xAuthToken
 
         // 1. Use KP to get signed URL
         const signedUrlViewModel = await sdk.getClientDataForDownload({
@@ -129,13 +143,20 @@ export const sourceDataRouter = createTRPCRouter({
     .input(
         z.object({
             researchContextId: z.number(),
-            xAuthToken: z.string(),
         }),
     )
     .query(async ({ input }) => {
+
+        const authGateway = serverContainer.get<AuthGatewayOutputPort>(GATEWAYS.AUTH_GATEWAY);
+        const kpCredentialsDTO = await authGateway.extractKPCredentials();
+
+        if (!kpCredentialsDTO.success) {
+            return [];
+        }
+
         const viewModel = await sdk.listSourceDataForResearchContext({
             id: input.researchContextId,
-            xAuthToken: input.xAuthToken || env.KP_AUTH_TOKEN,
+            xAuthToken: kpCredentialsDTO.data.xAuthToken,
         });
         if(viewModel.status) {
             const sources = viewModel.source_data_list
