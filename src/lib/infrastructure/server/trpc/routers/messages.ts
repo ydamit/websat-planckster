@@ -3,7 +3,7 @@ import { z } from "zod";
 
 import { ClientService as sdk } from "@maany_shr/kernel-planckster-sdk-ts";
 import { env } from "~/env";
-import OpenAIGateway from "~/lib/infrastructure/server/gateway/openai-gateway";
+import OpenAIGateway from "~/lib/infrastructure/server/gateway/openai-gateway-old";
 import { createTRPCRouter, protectedProcedure } from "../server";
 
 export const messageRouter = createTRPCRouter({

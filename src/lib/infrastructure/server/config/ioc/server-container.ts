@@ -6,6 +6,7 @@ import type AuthGatewayOutputPort from "~/lib/core/ports/secondary/auth-gateway-
 import NextAuthGateway from "~/lib/infrastructure/server/gateway/next-auth-gateway";
 import { appRouter } from "~/lib/infrastructure/server/trpc/app-router";
 import { api } from "~/lib/infrastructure/server/trpc/server-api";
+import OpenAIAgentGateway from "../../gateway/openai-agent-gateway";
 
 
 const serverContainer = new Container();
@@ -22,6 +23,8 @@ serverContainer.bind(TRPC.REACT_SERVER_COMPONENTS_API).toConstantValue(api);
 /**AuthGatewayOutputPort */
 serverContainer.bind<AuthGatewayOutputPort>(GATEWAYS.AUTH_GATEWAY).to(NextAuthGateway).inSingletonScope();
 
+/**AgentGatewayOutputPort */
+serverContainer.bind(GATEWAYS.AGENT_GATEWAY).toConstantValue(OpenAIAgentGateway);
 
 export default serverContainer;
 

@@ -19,7 +19,7 @@ export default class OpenAIGateway {
 
     constructor() {
         this.openAIAPIKey = env.OPENAI_API_KEY;
-        this.openAIAssistantID = env.OPENAI_ASSISTANT_ID;
+        this.openAIAssistantID = "sk-assistant-1";
     }
 
     uint8ArrayToBase64(uint8Array: Uint8Array): string {
