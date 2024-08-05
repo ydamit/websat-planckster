@@ -40,7 +40,7 @@ const config = {
     ]
   },
   "ignorePatterns": [
-    // "src/lib/infrastructure/server/config/**/*.js",
+    "tests/*",
   ]
 }
 
