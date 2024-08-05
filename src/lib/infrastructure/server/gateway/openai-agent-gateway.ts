@@ -14,7 +14,7 @@ export default class OpenAIAgentGateway implements AgentGatewayOutputPort {
         @inject(TRPC.REACT_SERVER_COMPONENTS_API) private api: TServerComponentAPI , 
     ) {
         this.openai = new OpenAI({
-            apiKey: env.OPENAI_API_KEY!,
+            apiKey: env.OPENAI_API_KEY! as string,
         });
     }        
 
