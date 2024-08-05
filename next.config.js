@@ -7,6 +7,8 @@ await import("./src/lib/infrastructure/server/config/env.js");
 await import("./src/lib/infrastructure/client/config/env.js");
 
 /** @type {import("next").NextConfig} */
-const config = {};
+const config = {
+    transpilePackages: ['superjson'],
+};
 
 export default config;
