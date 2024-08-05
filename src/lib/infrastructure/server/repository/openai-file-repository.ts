@@ -12,9 +12,23 @@ export default class OpenAIFileRepository implements FileRepositoryOutputPort {
     ) {
     }
     uploadFile(file: LocalFile): Promise<UploadFileDTO> {
-        throw new Error("Method not implemented.");
+        const errorDTO: UploadFileDTO = {
+            success: false,
+            data: {
+                operation: "upload",
+                message: "Method not implemented."
+            }
+        }
+        return Promise.resolve(errorDTO);
     }
     downloadFile(file: RemoteFile): Promise<DownloadFileDTO> {
-        throw new Error("Method not implemented.");
+        const errorDTO: DownloadFileDTO = {
+            success: false,
+            data: {
+                operation: "download",
+                message: "Method not implemented."
+            }
+        }
+        return Promise.resolve(errorDTO);
     }
 }

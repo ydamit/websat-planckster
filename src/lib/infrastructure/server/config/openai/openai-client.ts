@@ -3,8 +3,8 @@
 import OpenAI from "openai";
 import env from "~/lib/infrastructure/server/config/env";
 
-const openaiClient = new OpenAI({
+const OpenAIClient = new OpenAI({
     apiKey: env.OPENAI_API_KEY,
 });
 
-export default openaiClient;
+export default OpenAIClient;
