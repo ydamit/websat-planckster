@@ -1,4 +1,4 @@
-import { env } from "~/env";
+import { env } from "~/env.cjs";
 import { redirect } from "next/navigation";
 import { ListResearchContextsPage } from "./_components/list-research-contexts";
 import type { ResearchContext } from "@maany_shr/kernel-planckster-sdk-ts";

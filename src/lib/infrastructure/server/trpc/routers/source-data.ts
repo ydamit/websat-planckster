@@ -5,7 +5,7 @@ import { ClientService as sdk } from "@maany_shr/kernel-planckster-sdk-ts";
 
 import { downloadFile, uploadFile } from "~/lib/infrastructure/server/repository/file-repository-old";
 
-import { env } from "~/env";
+import { env } from "~/env.cjs";
 import { createTRPCRouter, protectedProcedure } from "../server";
 
 export const sourceDataRouter = createTRPCRouter({

@@ -2,7 +2,7 @@ import { inject, injectable } from "inversify";
 import OpenAI from "openai";
 import type { CreateAgentDTO } from "~/lib/core/dto/agent-dto";
 import type AgentGatewayOutputPort from "~/lib/core/ports/secondary/agent-gateway-output-port";
-import { env } from "~/env";
+import { env } from "~/env.cjs";
 import { TRPC } from "../config/ioc/server-ioc-symbols";
 import type { TServerComponentAPI } from "../trpc/server-api";
 

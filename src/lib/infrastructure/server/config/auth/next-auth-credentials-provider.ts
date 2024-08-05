@@ -1,7 +1,7 @@
 import CredentialsProvider, { type CredentialsConfig } from "next-auth/providers/credentials";
 import { VALID_CREDENTIALS } from "./credentials-store";
 import type { TSession } from "~/lib/core/entity/auth/session";
-import { env } from "~/env";
+import { env } from "~/env.cjs";
 
 
 export default class NextAuthCredentialsProvider {

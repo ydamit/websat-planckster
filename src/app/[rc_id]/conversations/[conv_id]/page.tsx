@@ -1,4 +1,4 @@
-import { env } from "~/env";
+import { env } from "~/env.cjs";
 import { redirect } from "next/navigation";
 
 import { DummySendMessage } from "~/app/_components/dummy-send-message";

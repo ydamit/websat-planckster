@@ -1,4 +1,4 @@
-import { env } from "~/env";
+import { env } from "~/env.cjs";
 import type { TCredentials } from "~/lib/core/entity/auth/userpass-credentials";
 
 export const VALID_CREDENTIALS =

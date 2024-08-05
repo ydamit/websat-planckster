@@ -2,7 +2,7 @@ import { z } from "zod";
 
 
 import { ClientService as sdk } from "@maany_shr/kernel-planckster-sdk-ts";
-import { env } from "~/env";
+import { env } from "~/env.cjs";
 import OpenAIGateway from "~/lib/infrastructure/server/gateway/openai-gateway-old";
 import { createTRPCRouter, protectedProcedure } from "../server";
 

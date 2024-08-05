@@ -1,4 +1,4 @@
-import { env } from "~/env";
+import { env } from "~/env.cjs";
 import { redirect } from "next/navigation";
 import { DummyUploadComponent } from "../_components/dummy-upload";
 import { DummyDownloadComponent } from "../_components/dummy-download";

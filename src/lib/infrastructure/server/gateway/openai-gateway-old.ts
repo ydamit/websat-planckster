@@ -1,5 +1,5 @@
 
-import { env } from "~/env";
+import { env } from "~/env.cjs";
 
 import OpenAI from 'openai';
 
@@ -100,7 +100,7 @@ export default class OpenAIGateway {
                     items = items.concat(page.getPaginatedItems());
                 }
                 // TIP: For handling images, see https://community.openai.com/t/how-do-download-files-generated-in-ai-assistants/493516/3
-                const messages = [];
+                const messages: { content: string; role: string; type: string; timestamp: number; }[] = [];
                 for (const item of items) {
                     const content = item.content;
                     for ( const message of content) {

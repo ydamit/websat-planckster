@@ -2,7 +2,7 @@ import { headers } from "next/headers";
 import { cache } from "react";
 import { createTRPCContext } from "~/lib/infrastructure/server/trpc/server";
 import { OpenAPI as KERNEL_PLANCKSTER_CONFIG } from "@maany_shr/kernel-planckster-sdk-ts";
-import { env } from "~/env";
+import { env } from "~/env.cjs";
 
 /**
  * This wraps the `createTRPCContext` helper and provides the required context for the tRPC API when

@@ -12,7 +12,7 @@
     /* Strictness */
     "strict": true,
     "noUncheckedIndexedAccess": true,
-    "checkJs": true,
+    "checkJs": false,
     "noImplicitAny": false,
 
     /* Bundled projects */
@@ -31,7 +31,7 @@
       "@/sdk/*": ["./src/sdk/*"],
       "@/app/*": ["./src/app/*"],
     },
-
+    
     /** Iversify */
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
@@ -44,9 +44,10 @@
     "**/*.ts",
     "**/*.tsx",
     "**/*.cjs",
+    "jest.config.mjs",
     "**/*.js",
     ".next/types/**/*.ts",
     "@types/**/*.d.ts"
-  ],
-  "exclude": ["node_modules", "coverage", ".storybook", ".next", "dist"]
+, "jest.config.cjs.backup" ],
+  "exclude": ["node_modules", "coverage", ".storybook", ".next", "dist", "jest.config.mjs", "node_modules/superjson/dist/**/*"],
 }

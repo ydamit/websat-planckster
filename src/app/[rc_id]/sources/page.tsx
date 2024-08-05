@@ -1,4 +1,4 @@
-import { env } from "~/env";
+import { env } from "~/env.cjs";
 import { redirect } from "next/navigation";
 import type AuthGatewayOutputPort from "~/lib/core/ports/secondary/auth-gateway-output-port";
 import serverContainer from "~/lib/infrastructure/server/config/ioc/server-container";

@@ -3,7 +3,7 @@ import { z } from "zod";
 
 import { ClientService as sdk } from "@maany_shr/kernel-planckster-sdk-ts";
 import type { NewResearchContextViewModel } from "@maany_shr/kernel-planckster-sdk-ts";
-import { env } from "~/env";
+import { env } from "~/env.cjs";
 import type AuthGatewayOutputPort from "~/lib/core/ports/secondary/auth-gateway-output-port";
 import serverContainer from "../../config/ioc/server-container";
 import { GATEWAYS } from "../../config/ioc/server-ioc-symbols";

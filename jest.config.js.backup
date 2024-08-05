@@ -1,0 +1,45 @@
+import nextJest from 'next/jest.js'
+
+const createJestConfig = nextJest({
+    // Provide the path to your Next.js app to load next.config.js and .env files in your test environment
+    dir: './',
+})
+
+
+const config = {
+    clearMocks: true,
+    coverageProvider: "v8",
+    testEnvironment: "jsdom",
+    setupFilesAfterEnv: ["<rootDir>/jest.setup.ts"],
+    // transform: {
+    //     "^.+\\.mjs$": "ts-jest",
+    //     "^.+\\.[tj]sx?$": "ts-jest",
+    //     "/node_modules/superjson/dist/(.*)": "ts-jest",
+    // },
+    transformIgnorePatterns: [
+        '/node_modules/(?!jose/.*)',
+        '/node_modules/(?!superjson/.*)',
+        '/node_modules/',
+        '^.+\\.module\\.(css|sass|scss)$',
+    ],
+    moduleDirectories: ['node_modules', '<rootDir>/'],
+    moduleNameMapper: {
+        "^~/(.*)$": ["<rootDir>/src/$1"],
+        "^@/sdk/(.*)$": ["<rootDir>/src/sdk/$1"],
+        "^@/app/(.*)$": ["<rootDir>/src/app/$1"],
+        "^jose": "jose",
+        "^@panva/hkdf": "@panva/hkdf",  
+        "^uuid": "uuid",
+        "^preact-render-to-string": "preact-render-to-string",
+        "^preact": "preact",
+        "^superjson/(.*)$": "superjson/$1",
+        '^.+\\.module\\.(css|sass|scss)$': 'identity-obj-proxy',
+    },
+    globals: {
+        'ts-jest': {
+            useESM: true,
+        },
+    },
+};
+
+export default createJestConfig(config);
