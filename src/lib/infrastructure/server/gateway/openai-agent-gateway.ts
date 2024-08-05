@@ -2,7 +2,7 @@ import { inject, injectable } from "inversify";
 import OpenAI from "openai";
 import type { CreateAgentDTO } from "~/lib/core/dto/agent-dto";
 import type AgentGatewayOutputPort from "~/lib/core/ports/secondary/agent-gateway-output-port";
-import { env } from "~/env";
+import env from "~/lib/infrastructure/server/config/env";
 import { TRPC } from "../config/ioc/server-ioc-symbols";
 import type { TServerComponentAPI } from "../trpc/server-api";
 
@@ -14,7 +14,7 @@ export default class OpenAIAgentGateway implements AgentGatewayOutputPort {
         @inject(TRPC.REACT_SERVER_COMPONENTS_API) private api: TServerComponentAPI , 
     ) {
         this.openai = new OpenAI({
-            apiKey: env.OPENAI_API_KEY,
+            apiKey: env.OPENAI_API_KEY!,
         });
     }        
 

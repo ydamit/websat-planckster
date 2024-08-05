@@ -1,5 +1,5 @@
 
-import { env } from "~/env";
+import env from "~/lib/infrastructure/server/config/env";
 
 import OpenAI from 'openai';
 
@@ -18,7 +18,7 @@ export default class OpenAIGateway {
     private openAIAssistantID: string | undefined;
 
     constructor() {
-        this.openAIAPIKey = env.OPENAI_API_KEY;
+        this.openAIAPIKey = env.OPENAI_API_KEY! as string;
         this.openAIAssistantID = "sk-assistant-1";
     }
 

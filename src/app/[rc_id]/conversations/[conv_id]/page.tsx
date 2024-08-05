@@ -1,4 +1,4 @@
-import { env } from "~/env";
+import env from "~/lib/infrastructure/server/config/env";
 import { redirect } from "next/navigation";
 
 import { DummySendMessage } from "~/app/_components/dummy-send-message";
@@ -27,7 +27,7 @@ async function ListMessages({ conv_id }: { conv_id: string }) {
   const conv_id_int = parseInt(conv_id);
   const messages = await api.kernel.message.list({
     conversationId: conv_id_int,
-    xAuthToken: env.KP_AUTH_TOKEN,
+    xAuthToken: env.KP_AUTH_TOKEN! as string,
   });
 
   //const cmProps: ChatMessageProps[] = []
@@ -59,7 +59,7 @@ async function ListMessages({ conv_id }: { conv_id: string }) {
       </ul>
       <DummySendMessage
         conversationId={conv_id_int}
-        xAuthToken={env.KP_AUTH_TOKEN}
+        xAuthToken={env.KP_AUTH_TOKEN! as string}
         messageContent="This is a hard-coded test message from websat planckster. Now greet me"
       />
     </div>

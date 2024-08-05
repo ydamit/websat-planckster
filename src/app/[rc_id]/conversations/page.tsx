@@ -1,4 +1,4 @@
-import { env } from "~/env";
+import env from "~/lib/infrastructure/server/config/env";
 import { redirect } from "next/navigation";
 import { ListConversationsPage } from "../../_components/list-conversations";
 import type AuthGatewayOutputPort from "~/lib/core/ports/secondary/auth-gateway-output-port";
@@ -22,13 +22,13 @@ async function ListConversations({ rc_id }: { rc_id: string }) {
   const rc_id_int = parseInt(rc_id);
   const conversations = await api.kernel.conversation.list({
     id: rc_id_int,
-    xAuthToken: env.KP_AUTH_TOKEN,
+    xAuthToken: env.KP_AUTH_TOKEN! as string,
   });
 
   return (
     <ListConversationsPage
       conversations={conversations}
-      kernelPlancksterHost={env.KP_HOST}
+      kernelPlancksterHost={env.KP_HOST! as string}
     />
   );
 }

@@ -3,7 +3,7 @@ import { z } from "zod";
 
 import { ClientService as sdk } from "@maany_shr/kernel-planckster-sdk-ts";
 import type { NewResearchContextViewModel } from "@maany_shr/kernel-planckster-sdk-ts";
-import { env } from "~/env";
+import env from "~/lib/infrastructure/server/config/env";
 import type AuthGatewayOutputPort from "~/lib/core/ports/secondary/auth-gateway-output-port";
 import serverContainer from "../../config/ioc/server-container";
 import { GATEWAYS } from "../../config/ioc/server-ioc-symbols";
@@ -20,7 +20,7 @@ export const researchContextRouter = createTRPCRouter({
     .query(async ({ input }) => {
       const viewModel = await sdk.listResearchContexts({
         id: input.id ?? env.KP_CLIENT_ID,
-        xAuthToken: input.xAuthToken || env.KP_AUTH_TOKEN,
+        xAuthToken: input.xAuthToken || env.KP_AUTH_TOKEN!,
       });
       if (viewModel.status) {
         const researchContexts = viewModel.research_contexts;
@@ -47,7 +47,7 @@ export const researchContextRouter = createTRPCRouter({
       const viewModel: NewResearchContextViewModel = await sdk.createResearchContext({
         clientSub: userID,
         requestBody: input.sourceDataIdList,
-        xAuthToken: env.KP_AUTH_TOKEN,
+        xAuthToken: env.KP_AUTH_TOKEN!,
         researchContextTitle: input.title,
         researchContextDescription: input.description,
       })

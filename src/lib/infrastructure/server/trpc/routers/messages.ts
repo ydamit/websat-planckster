@@ -2,7 +2,7 @@ import { z } from "zod";
 
 
 import { ClientService as sdk } from "@maany_shr/kernel-planckster-sdk-ts";
-import { env } from "~/env";
+import env from "~/lib/infrastructure/server/config/env";
 import OpenAIGateway from "~/lib/infrastructure/server/gateway/openai-gateway-old";
 import { createTRPCRouter, protectedProcedure } from "../server";
 
@@ -17,7 +17,7 @@ export const messageRouter = createTRPCRouter({
     .query(async ({ input }) => {
         const viewModel = await sdk.listMessages({
             id: input.conversationId,
-            xAuthToken: input.xAuthToken || env.KP_AUTH_TOKEN,
+            xAuthToken: input.xAuthToken || env.KP_AUTH_TOKEN! as string,
         });
         if(viewModel.status) {
             const messages = viewModel.message_list
@@ -42,7 +42,7 @@ export const messageRouter = createTRPCRouter({
         // 1. Use KP to get the first message of a conversation, plus the latest 10
         const viewModel = await sdk.listMessages({
             id: input.conversationId,
-            xAuthToken: input.xAuthToken || env.KP_AUTH_TOKEN,
+            xAuthToken: input.xAuthToken || env.KP_AUTH_TOKEN! as string,
         });
 
         if (viewModel.status){
@@ -90,7 +90,7 @@ export const messageRouter = createTRPCRouter({
                     messageContent: input.messageContent,
                     senderType: "user",
                     unixTimestamp: userMessageTimestamp,
-                    xAuthToken: input.xAuthToken || env.KP_AUTH_TOKEN,
+                    xAuthToken: input.xAuthToken || env.KP_AUTH_TOKEN! as string,
                 })
 
                 if (newUserMessageVM.status){
@@ -100,7 +100,7 @@ export const messageRouter = createTRPCRouter({
                         messageContent: responseMessage,
                         senderType: "agent",
                         unixTimestamp: aiMessageTimestamp,
-                        xAuthToken: input.xAuthToken || env.KP_AUTH_TOKEN,
+                        xAuthToken: input.xAuthToken || env.KP_AUTH_TOKEN! as string,
                     })
 
                     if (newAgentMessageVM.status){

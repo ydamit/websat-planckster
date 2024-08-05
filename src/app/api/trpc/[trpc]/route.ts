@@ -1,7 +1,7 @@
 import { fetchRequestHandler } from "@trpc/server/adapters/fetch";
 import { type NextRequest } from "next/server";
 
-import { env } from "~/env";
+import env from "~/lib/infrastructure/server/config/env";
 import serverContainer from "~/lib/infrastructure/server/config/ioc/server-container";
 import { TRPC } from "~/lib/infrastructure/server/config/ioc/server-ioc-symbols";
 import { type AppRouter } from "~/lib/infrastructure/server/trpc/app-router";

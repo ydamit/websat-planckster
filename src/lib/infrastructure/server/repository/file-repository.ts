@@ -13,7 +13,7 @@ export type FileRepositoryDTO = {
     errorType?: string | null;
 }
 
-export async function uploadFile(signedUrl: string, filePath: string) {
+export async function uploadFile(signedUrl: string, filePath: string): Promise<FileRepositoryDTO> {
 
     const fileData = fs.readFileSync(filePath);
 

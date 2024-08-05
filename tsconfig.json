@@ -32,8 +32,7 @@
 
     /** Iversify */
     "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-
+    "emitDecoratorMetadata": true
   },
   "include": [
     ".eslintrc.cjs",
