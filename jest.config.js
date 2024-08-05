@@ -13,11 +13,11 @@ const jestConfig = {
   testEnvironment: "node",
   preset: "ts-jest/presets/js-with-ts",
   transform: {
-    // ...createJsWithTsPreset().transform,
+    ...createJsWithTsPreset().transform,
     "^.+.tsx?$": ["ts-jest",{}],
   },
   transformIgnorePatterns: [
-    "node_modules/(?!(@t3-oss/env-core|@t3-oss/env-nextjs|superjson)/)",
+    "node_modules/(?!(@t3-oss/env-core|@t3-oss/env-nextjs|superjson|@maany_shr/planckster-ui-kit)/)",
   ],
   moduleNameMapper: {
     "^~/(.*)$": ["<rootDir>/src/$1"],

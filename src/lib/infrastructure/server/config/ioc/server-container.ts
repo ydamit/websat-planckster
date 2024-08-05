@@ -8,6 +8,8 @@ import { appRouter } from "~/lib/infrastructure/server/trpc/app-router";
 import { api } from "~/lib/infrastructure/server/trpc/server-api";
 import OpenAIAgentGateway from "~/lib/infrastructure/server/gateway/openai-agent-gateway";
 import KernelPlancksterServerSideFileRepository from "~/lib/infrastructure/server/repository/file-repository";
+import type AgentGatewayOutputPort from "~/lib/core/ports/secondary/agent-gateway-output-port";
+import type KernelFileRepositoryOutputPort from "~/lib/core/ports/secondary/kernel-file-repository-output-port";
 
 
 const serverContainer = new Container();
@@ -25,10 +27,10 @@ serverContainer.bind(TRPC.REACT_SERVER_COMPONENTS_API).toConstantValue(api);
 serverContainer.bind<AuthGatewayOutputPort>(GATEWAYS.AUTH_GATEWAY).to(NextAuthGateway).inSingletonScope();
 
 /**AgentGatewayOutputPort */
-serverContainer.bind(GATEWAYS.AGENT_GATEWAY).toConstantValue(OpenAIAgentGateway);
+serverContainer.bind<AgentGatewayOutputPort>(GATEWAYS.AGENT_GATEWAY).to(OpenAIAgentGateway);
 
 /** File Repository */
-serverContainer.bind(REPOSITORY.KP_FILE_REPOSITORY).toConstantValue(KernelPlancksterServerSideFileRepository);
+// serverContainer.bind<KernelFileRepositoryOutputPort>(REPOSITORY.KP_FILE_REPOSITORY).toConstantValue(KernelPlancksterServerSideFileRepository);
 
 export default serverContainer;
 
