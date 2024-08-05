@@ -56,7 +56,7 @@ export const sourceDataRouter = createTRPCRouter({
           const signedUrl = signedUrlViewModel.signed_url
 
           // 2. Use File Repository to upload
-          const uploadDto = await uploadFile(signedUrl, input.localFilePath)
+          const uploadDto: {status: boolean}= await uploadFile(signedUrl, input.localFilePath)
           
           if (uploadDto.status) {
 
