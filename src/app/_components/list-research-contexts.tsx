@@ -1,4 +1,3 @@
-"use client";
 import { ResearchContextPage } from "@maany_shr/planckster-ui-kit";
 import { type ResearchContext } from "node_modules/@maany_shr/kernel-planckster-sdk-ts";
 import clientContainer from "~/lib/infrastructure/client/config/ioc/client-container";
@@ -23,6 +22,7 @@ export function ListResearchContextsPage(props: ListResearchContextsPageProps) {
 
   return (
     <div>
+      {/*
       <button disabled={false} />
       {addNewContextMutation.isError && (
         <div>Error: {addNewContextMutation.error.message}</div>
@@ -38,6 +38,7 @@ export function ListResearchContextsPage(props: ListResearchContextsPageProps) {
         }}
         apiUrl={props.kernelPlancksterHost}
       />
+      */}
     </div>
   );
 }

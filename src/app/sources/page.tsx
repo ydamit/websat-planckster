@@ -5,7 +5,6 @@ import type AuthGatewayOutputPort from "~/lib/core/ports/secondary/auth-gateway-
 import serverContainer from "~/lib/infrastructure/server/config/ioc/server-container";
 import { GATEWAYS, TRPC } from "~/lib/infrastructure/server/config/ioc/server-ioc-symbols";
 import type { TServerComponentAPI } from "~/lib/infrastructure/server/trpc/server-api";
-import { useState } from "react";
 
 export default async function Home() {
   const authGateway = serverContainer.get<AuthGatewayOutputPort>(
@@ -22,8 +21,6 @@ async function ListSourceData() {
   const api: TServerComponentAPI = serverContainer.get(TRPC.REACT_SERVER_COMPONENTS_API);
 
   const sourceData = await api.kernel.sourceData.listForClient();
-
-
 
   // Return a simple HTML unordered list
   // Plus something to see the uploadSourceData result

@@ -1,24 +1,22 @@
 "use client";
 import clientContainer from "~/lib/infrastructure/client/config/ioc/client-container";
-import type { TClientComponentAPI } from "~/lib/infrastructure/client/trpc/react-api";
-import { TRPC } from "~/lib/infrastructure/client/config/ioc/client-ioc-symbols";
+import { CONTROLLERS } from "~/lib/infrastructure/client/config/ioc/client-ioc-symbols";
 import { useState } from "react";
+import FileUploadingController from "~/lib/infrastructure/client/controllers/file-uploading-controller";
+import { TFileUploadingViewModel } from "~/lib/core/view-models/file-uploading-view-model";
+import { useSignal } from "@preact/signals-react";
+import { DummyUploadButton } from "./dummy-upload-button";
 
-export type DummyUploadProps = {
-    protocol: string,
-    relativePath: string,
-    sourceDataName: string,
-};
 
 export function DummyUploadComponent(
-    props: DummyUploadProps
 ) {
-    const api = clientContainer.get<TClientComponentAPI>(TRPC.REACT_CLIENT_COMPONENTS_API);
-    const uploadSourceDataMutation = api.kernel.sourceData.create.useMutation({
-        onSuccess: () => {
-            console.log("Source data uploaded");
-        },
-    });
+
+  const fileUploadingController = clientContainer.get<FileUploadingController>(CONTROLLERS.FILE_UPLOADING_CONTROLLER);
+
+  const fileUploadingViewModel = useSignal<TFileUploadingViewModel>({
+    status: "request",
+    message: "File uploading test",
+  });
 
   const [localFilePath, setLocalFilePath] = useState<string | null>(null);
 
@@ -30,59 +28,23 @@ export function DummyUploadComponent(
   };
 
     return (
-        <div>
+        <div className="flex flex-row gap-md">
 
-        <input type="file" id="file-selector" name="file-selector" onChange={handleFileChange} />
+          <input type="file" id="file-selector" name="file-selector" onChange={handleFileChange} />
 
-      {
-        !localFilePath && (
-        <div>
-          <p>Please select a file to upload</p>
-          <button className={"border-2 border-neutral-950 text-gray-400 rounded-md"} disabled={true}>Upload Source Data</button>
-        </div>
-        )
-      }
-
-      {
-        localFilePath && (
+        {
+          !localFilePath && (
           <div>
-            <p>File selected: {localFilePath}</p>
-
-            <button
-                className={"border-2 border-neutral-950 rounded-md"} 
-                onClick={() => {
-                    uploadSourceDataMutation.mutate({
-                        protocol: props.protocol,
-                        relativePath: props.relativePath,
-                        sourceDataName: props.sourceDataName,
-                        localFilePath: localFilePath,
-                    });
-                }}
-            >
-                Upload Source Data
-            </button>
-            {
-                uploadSourceDataMutation.isError && (
-                    <div>Error: {JSON.stringify(uploadSourceDataMutation.error)}</div>
-                )
-            }
-            {
-                !uploadSourceDataMutation.isSuccess && !uploadSourceDataMutation.isError && (
-                    <div>Uploading...</div>
-                )
-            }
-            {
-                uploadSourceDataMutation.isSuccess && (
-                    <div>Upload successful</div>
-                )
-            }
-
-
+            <p>Please select a file to upload</p>
+            <button className={"border-2 border-neutral-950 text-gray-400 rounded-md"} disabled={true}>Upload Source Data</button>
           </div>
-        )
-      }
+          )
+        }
 
-
+        {
+          localFilePath && (
+            <DummyUploadButton localFilePath={localFilePath} />
+           )} 
         </div>
     );
-}
+  }

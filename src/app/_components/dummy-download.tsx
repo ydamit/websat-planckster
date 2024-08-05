@@ -13,15 +13,15 @@ export type DummyDownloadProps = {
 export function DummyDownloadComponent(
     props: DummyDownloadProps
 ) {
-    const api = clientContainer.get<TClientComponentAPI>(TRPC.REACT_CLIENT_COMPONENTS_API);
-    const downloadSourceDataMutation = api.kernel.sourceData.download.useMutation({
-        onSuccess: () => {
-            console.log("Source data downloaded");
-        },
-    });
+    //const api = clientContainer.get<TClientComponentAPI>(TRPC.REACT_CLIENT_COMPONENTS_API);
+    //const downloadSourceDataMutation = api.kernel.sourceData.download.useMutation({
+        //onSuccess: () => {
+            //console.log("Source data downloaded");
+        //},
+    //});
 
     return (
-        <div>
+        <div> {/*
             <button
                 className={"border-2 border-neutral-950 rounded-md"} 
                 onClick={() => {
@@ -37,6 +37,7 @@ export function DummyDownloadComponent(
             {downloadSourceDataMutation.isError && (
                 <div>Error: {JSON.stringify(downloadSourceDataMutation.error)}</div>
             )}
+        */}
         </div>
     );
 }

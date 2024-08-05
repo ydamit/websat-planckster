@@ -1,4 +1,3 @@
-"use client";
 
 import clientContainer from "~/lib/infrastructure/client/config/ioc/client-container";
 import type { TClientComponentAPI } from "~/lib/infrastructure/client/trpc/react-api";
@@ -22,7 +21,7 @@ export function DummySendMessage(
 
     return (
         <div>
-            <button
+            {/*<button
                 onClick={() => {
                     sendMessageMutation.mutate({
                         conversationId: props.conversationId,
@@ -34,7 +33,8 @@ export function DummySendMessage(
             </button>
             {sendMessageMutation.isError && (
                 <div>Error: {JSON.stringify(sendMessageMutation.error)}</div>
-            )}
+            )}*/}
+        
         </div>
     );
 }
