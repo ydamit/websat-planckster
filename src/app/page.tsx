@@ -1,4 +1,3 @@
-import { env } from "~/env";
 import { redirect } from "next/navigation";
 import { ListResearchContextsPage } from "./_components/list-research-contexts";
 import type { ResearchContext } from "@maany_shr/kernel-planckster-sdk-ts";
@@ -9,6 +8,7 @@ import {
   TRPC,
 } from "~/lib/infrastructure/server/config/ioc/server-ioc-symbols";
 import type { TServerComponentAPI } from "~/lib/infrastructure/server/trpc/server-api";
+import env from "~/lib/infrastructure/server/config/env";
 
 export default async function ListResearchContexts() {
   const authGateway = serverContainer.get<AuthGatewayOutputPort>(
@@ -37,7 +37,7 @@ export default async function ListResearchContexts() {
     <div>
       <ListResearchContextsPage
         researchContexts={researchContexts}
-        kernelPlancksterHost={env.KP_HOST}
+        kernelPlancksterHost={env.KP_HOST! as string}
       />
     </div>
   );

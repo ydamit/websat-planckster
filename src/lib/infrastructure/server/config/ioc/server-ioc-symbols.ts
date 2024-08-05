@@ -10,6 +10,14 @@ export const TRPC = {
     REACT_SERVER_COMPONENTS_API: Symbol.for('SERVER_API'),
 }
 
+export const SERVER_ENV = {
+    OPENAI_API_KEY: Symbol.for('OPENAI_API_KEY'),
+}
+
+export const OPENAI = {
+    OPENAI_CLIENT: Symbol.for('OPENAI_CLIENT'),
+}
+
 export const GATEWAYS = {
     AUTH_GATEWAY: Symbol.for('AUTH_GATEWAY'),
     AGENT_GATEWAY: Symbol.for('AGENT_GATEWAY'),

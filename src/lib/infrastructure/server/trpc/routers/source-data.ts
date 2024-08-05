@@ -5,7 +5,7 @@ import { ClientService as sdk } from "@maany_shr/kernel-planckster-sdk-ts";
 
 import { downloadFile, uploadFile } from "~/lib/infrastructure/server/repository/file-repository";
 
-import { env } from "~/env";
+import env from "~/lib/infrastructure/server/config/env";
 import { createTRPCRouter, protectedProcedure } from "../server";
 
 export const sourceDataRouter = createTRPCRouter({
@@ -19,7 +19,7 @@ export const sourceDataRouter = createTRPCRouter({
     .query(async ({ input }) => {
         const viewModel = await sdk.listSourceData({
             id: input.clientId ?? env.KP_CLIENT_ID,
-            xAuthToken: input.xAuthToken || env.KP_AUTH_TOKEN,
+            xAuthToken: input.xAuthToken || env.KP_AUTH_TOKEN! as string,
         });
         if(viewModel.status) {
             const sources = viewModel.source_data_list
@@ -43,7 +43,7 @@ export const sourceDataRouter = createTRPCRouter({
       )
       .mutation(async ({ input }) => {
         const clientID = input.clientId ?? env.KP_CLIENT_ID
-        const authToken = input.xAuthToken || env.KP_AUTH_TOKEN
+        const authToken = input.xAuthToken || env.KP_AUTH_TOKEN! as string
 
         // 1. Use KP to get signed URL
         const signedUrlViewModel = await sdk.getClientDataForUpload({
@@ -100,7 +100,7 @@ export const sourceDataRouter = createTRPCRouter({
       )
       .mutation(async ({ input }) => {
         const clientID = input.clientId ?? env.KP_CLIENT_ID
-        const authToken = input.xAuthToken || env.KP_AUTH_TOKEN
+        const authToken = input.xAuthToken || env.KP_AUTH_TOKEN! as string
 
         // 1. Use KP to get signed URL
         const signedUrlViewModel = await sdk.getClientDataForDownload({
@@ -135,7 +135,7 @@ export const sourceDataRouter = createTRPCRouter({
     .query(async ({ input }) => {
         const viewModel = await sdk.listSourceDataForResearchContext({
             id: input.researchContextId,
-            xAuthToken: input.xAuthToken || env.KP_AUTH_TOKEN,
+            xAuthToken: input.xAuthToken || env.KP_AUTH_TOKEN! as string,
         });
         if(viewModel.status) {
             const sources = viewModel.source_data_list

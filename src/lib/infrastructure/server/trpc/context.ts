@@ -2,7 +2,7 @@ import { headers } from "next/headers";
 import { cache } from "react";
 import { createTRPCContext } from "~/lib/infrastructure/server/trpc/server";
 import { OpenAPI as KERNEL_PLANCKSTER_CONFIG } from "@maany_shr/kernel-planckster-sdk-ts";
-import { env } from "~/env";
+import env from "~/lib/infrastructure/server/config/env";
 
 /**
  * This wraps the `createTRPCContext` helper and provides the required context for the tRPC API when
@@ -13,7 +13,8 @@ const createContext = cache(() => {
     heads.set("x-trpc-source", "rsc");
   
     // Configure OpenAPI SDK to point to the correct kernel planckster host
-    KERNEL_PLANCKSTER_CONFIG.BASE = env.KP_HOST;
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    KERNEL_PLANCKSTER_CONFIG.BASE = env.KP_HOST!;
     
     return createTRPCContext({
       headers: heads,

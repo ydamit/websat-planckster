@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import { Container } from "inversify";
-import { CONSTANTS, GATEWAYS, TRPC } from "./server-ioc-symbols";
+import { CONSTANTS, GATEWAYS, SERVER_ENV, TRPC } from "./server-ioc-symbols";
 import { authOptions } from "~/lib/infrastructure/server/config/auth/next-auth-config";
 import type AuthGatewayOutputPort from "~/lib/core/ports/secondary/auth-gateway-output-port";
 import NextAuthGateway from "~/lib/infrastructure/server/gateway/next-auth-gateway";
@@ -10,6 +10,10 @@ import OpenAIAgentGateway from "../../gateway/openai-agent-gateway";
 
 
 const serverContainer = new Container();
+
+/** SERVER ENVIRONMENT */
+serverContainer.bind(SERVER_ENV.OPENAI_API_KEY).toConstantValue(process.env.OPENAI_API_KEY);
+
 
 /**NextAuthOptions */
 serverContainer.bind(CONSTANTS.NEXT_AUTH_OPTIONS).toConstantValue(authOptions);

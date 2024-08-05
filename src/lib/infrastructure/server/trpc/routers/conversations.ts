@@ -2,7 +2,7 @@ import { z } from "zod";
 
 
 import { ClientService as sdk } from "@maany_shr/kernel-planckster-sdk-ts";
-import { env } from "~/env";
+import env from "~/lib/infrastructure/server/config/env";
 import { createTRPCRouter, protectedProcedure } from "~/lib/infrastructure/server/trpc/server";
 
 export const conversationRouter = createTRPCRouter({
@@ -16,7 +16,7 @@ export const conversationRouter = createTRPCRouter({
     .query(async ({ input }) => {
         const viewModel = await sdk.listConversations({
             id: input.id,
-            xAuthToken: input.xAuthToken || env.KP_AUTH_TOKEN,
+            xAuthToken: input.xAuthToken ?? env.KP_AUTH_TOKEN!,
         });
         if(viewModel.status) {
             const conversations = viewModel.conversations
@@ -36,7 +36,7 @@ export const conversationRouter = createTRPCRouter({
         .mutation(async ({ input }) => {
             const viewModel = await sdk.createConversation({
                 id: input.id,
-                xAuthToken: env.KP_AUTH_TOKEN,
+                xAuthToken: env.KP_AUTH_TOKEN! as string,
                 conversationTitle: input.title,
             });
             if(viewModel.status) {
