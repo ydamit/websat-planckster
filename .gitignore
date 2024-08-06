@@ -43,3 +43,7 @@ yarn-error.log*
 
 *.crt
 *.key
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/

@@ -35,6 +35,7 @@
   },
   "devDependencies": {
     "@inrupt/jest-jsdom-polyfills": "^3.2.1",
+    "@playwright/test": "^1.46.0",
     "@testing-library/jest-dom": "^6.4.8",
     "@testing-library/react": "^16.0.0",
     "@types/eslint": "^8.56.2",
