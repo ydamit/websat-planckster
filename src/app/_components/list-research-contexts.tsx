@@ -23,7 +23,7 @@ export function ListResearchContextsPage(props: ListResearchContextsPageProps) {
 
   return (
     <div>
-      {/* <button disabled={false} />
+      <button disabled={false} />
       {addNewContextMutation.isError && (
         <div>Error: {addNewContextMutation.error.message}</div>
       )}
@@ -37,7 +37,7 @@ export function ListResearchContextsPage(props: ListResearchContextsPageProps) {
           });
         }}
         apiUrl={props.kernelPlancksterHost}
-      /> */}
+      />
     </div>
   );
 }
