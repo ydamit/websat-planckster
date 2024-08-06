@@ -38,20 +38,11 @@ const runtimeEnv = {
   OPENAI_API_KEY: process.env.OPENAI_API_KEY,
 };
 
-const skipValidation = process.env.SKIP_ENV_VALIDATION === "true";
-let env = runtimeEnv;
-
-if (skipValidation) {
-  console.warn(
-    "⚠️ Skipping server environment variables validation. This is dangerous in production.",
+const envValidationResult = serverEnvSchema.safeParse(runtimeEnv);
+if (!envValidationResult.success) {
+  throw new Error(
+    "❌ Invalid environment variables: " +
+      JSON.stringify(envValidationResult.error.format(), null, 4),
   );
-} else {
-  const envValidationResult = serverEnvSchema.safeParse(runtimeEnv);
-  if (!envValidationResult.success) {
-    throw new Error(
-      "❌ Invalid environment variables: " +
-        JSON.stringify(envValidationResult.error.format(), null, 4),
-    );
-  }
 }
-export default env;
+export default envValidationResult.data;

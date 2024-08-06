@@ -13,21 +13,14 @@ const runtimeEnv = {
   //   NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
 };
 
-const skipValidation = process.env.SKIP_ENV_VALIDATION === "true";
 let env = runtimeEnv;
 
-if (skipValidation) {
-  console.warn(
-    "⚠️ Skipping client environment variables validation. This is dangerous in production.",
+const envValidationResult = clientEnvSchema.safeParse(runtimeEnv);
+if (!envValidationResult.success) {
+  throw new Error(
+    "❌ Invalid client environment variables: " +
+      JSON.stringify(envValidationResult.error.format(), null, 4),
   );
-} else {
-  const envValidationResult = clientEnvSchema.safeParse(runtimeEnv);
-  if (!envValidationResult.success) {
-    throw new Error(
-      "❌ Invalid client environment variables: " +
-        JSON.stringify(envValidationResult.error.format(), null, 4),
-    );
-  }
 }
 
-export default env
+export default env;
