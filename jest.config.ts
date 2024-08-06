@@ -8,6 +8,7 @@ import type {Config} from 'jest';
 const config: Config = {
   projects: [
     '<rootDir>/tests/server/jest.config.ts',
+    '<rootDir>/tests/client/jest.config.ts',
   ],
 };
 
