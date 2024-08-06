@@ -45,5 +45,5 @@
     ".next/types/**/*.ts",
     "@types/**/*.d.ts"
   ],
-  "exclude": ["node_modules", "coverage", ".storybook", ".next", "dist"]
+  "exclude": ["node_modules", "coverage", ".storybook", ".next", "dist", "./playwright-report"]
 }
