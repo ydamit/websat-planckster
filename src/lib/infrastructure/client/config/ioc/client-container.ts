@@ -1,10 +1,15 @@
 import "reflect-metadata";
 import { Container } from "inversify";
-import { TRPC } from "./client-ioc-symbols";
+import { REPOSITORY, TRPC } from "./client-ioc-symbols";
 import { api } from "~/lib/infrastructure/client/trpc/react-api";
+import BrowserFileRepository from "~/lib/infrastructure/repository/browser-file-repository";
 
 const clientContainer = new Container();
 
+/** GATEWAYS */
 clientContainer.bind(TRPC.REACT_CLIENT_COMPONENTS_API).toConstantValue(api);
+
+/** REPOSITORY */
+clientContainer.bind(REPOSITORY.FILE_REPOSITORY).to(BrowserFileRepository);
 
 export default  clientContainer;
