@@ -1,20 +1,16 @@
-import clientContainer from "~/lib/infrastructure/client/config/ioc/client-container";
 import { FileUploadingInputPort, FileUploadingOutputPort } from "../ports/primary/file-uploading-input-port";
 import FileRepositoryOutputPort from "../ports/secondary/file-repository-output-port";
 import { TFileUploadingRequest } from "../usecase-models/file-uploading-usecase-models";
-import { REPOSITORIES } from "~/lib/infrastructure/client/config/ioc/client-ioc-symbols";
 import { TServerComponentAPI } from "~/lib/infrastructure/server/trpc/server-api";
-import serverContainer from "~/lib/infrastructure/server/config/ioc/server-container";
-import { TRPC } from "~/lib/infrastructure/server/config/ioc/server-ioc-symbols";
 import path from "path";
-import { DecorateRouterRecord } from "@trpc/react-query/shared";
 
 
 
 export default class FileUploadingUseCase implements FileUploadingInputPort {
     presenter: FileUploadingOutputPort<any>;
     fileRepository: FileRepositoryOutputPort;
-    serverApi: TServerComponentAPI;  // TODO: fix typing
+    //sourceDataRepository: SourceDataRepositoryOutputPort;  // TODO: implement this
+    serverApi: TServerComponentAPI;  // TODO: DON'T DO THIS, do what's above and inject it in the usual way
 
     constructor(presenter: FileUploadingOutputPort<any>, fileRepository: FileRepositoryOutputPort, serverApi: TServerComponentAPI) {
         this.presenter = presenter;
