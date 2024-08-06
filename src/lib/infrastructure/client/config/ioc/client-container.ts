@@ -2,7 +2,7 @@ import "reflect-metadata";
 import { Container } from "inversify";
 import { REPOSITORY, TRPC } from "./client-ioc-symbols";
 import { api } from "~/lib/infrastructure/client/trpc/react-api";
-import BrowserFileRepository from "~/lib/infrastructure/repository/browser-file-repository";
+import BrowserFileRepository from "~/lib/infrastructure/client/repository/browser-file-repository";
 
 const clientContainer = new Container();
 

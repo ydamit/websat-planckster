@@ -17,3 +17,5 @@ export type RemoteFile = z.infer<typeof RemoteFileSchema>;
 
 export const FileSchema = z.discriminatedUnion("type", [LocalFileSchema, RemoteFileSchema]);
 
+export type File = z.infer<typeof FileSchema>;
+
