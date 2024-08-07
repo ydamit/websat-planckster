@@ -7,6 +7,7 @@ import axios from "axios";
 import AuthGatewayOutputPort from "~/lib/core/ports/secondary/auth-gateway-output-port";
 import { http, HttpResponse } from "msw";
 import { setupServer } from "msw/node";
+import { loadAuthMocks } from "../mocks/auth";
 
 const KP_UPLOAD_CREDENTIALS_ENDPOINT = http.get(`http://10.10.10.10/client/123/upload-credentials?protocol=s3&relative_path=test.txt`, () => {
     return HttpResponse.json({
@@ -28,8 +29,8 @@ const MockHttpServer = setupServer(...handlers);
 describe("Kernel File Repository", () => {
     beforeAll(() => {
         // create a test file to upload with sample content
-        
         MockHttpServer.listen();
+        loadAuthMocks();
     });
     afterEach(() => {
         MockHttpServer.resetHandlers();
