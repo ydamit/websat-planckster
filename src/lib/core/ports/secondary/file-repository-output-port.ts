@@ -1,4 +1,4 @@
-import type { DownloadFileDTO, UploadFileDTO } from "../../dto/file-repository-dto";
+import type { DownloadFileDTO, UploadFileDTO } from "../../dto/remote-storage-repository-dto";
 import type { LocalFile, RemoteFile } from "../../entity/file";
 
 export default interface FileRepositoryOutputPort {

@@ -1,7 +1,7 @@
-import type { UploadFileDTO, DownloadFileDTO } from "~/lib/core/dto/file-repository-dto";
+import type { UploadFileDTO, DownloadFileDTO } from "~/lib/core/dto/remote-storage-repository-dto";
 import type { LocalFile, RemoteFile } from "~/lib/core/entity/file";
 import type FileRepositoryOutputPort from "~/lib/core/ports/secondary/file-repository-output-port";
-import type { BaseErrorDTOData } from "~/sdk/core/dto";
+import type { TBaseErrorDTOData } from "~/sdk/core/dto";
 
 import axios from "axios";
 import fs from "fs";
@@ -28,7 +28,7 @@ export default class KernelFileRepository implements FileRepositoryOutputPort {
                 data: {
                     operation: "kp#upload",
                     message: `File ${file.path} does not exist on the local filesystem`
-                } as BaseErrorDTOData
+                } as TBaseErrorDTOData
             }
         }
 
@@ -40,7 +40,7 @@ export default class KernelFileRepository implements FileRepositoryOutputPort {
                 data: {
                     operation: "kp#upload",
                     message: kpCredentialsDTO.data.message
-                } as BaseErrorDTOData
+                } as TBaseErrorDTOData
             }
         }
         const { clientID, xAuthToken } = kpCredentialsDTO.data;
@@ -61,7 +61,7 @@ export default class KernelFileRepository implements FileRepositoryOutputPort {
                 data: {
                     operation: "kp#upload",
                     message: `Error getting signed URL from Kernel. Status Code: ${err.status} ${err.statusText}. Message: ${err.message}`,
-                } as BaseErrorDTOData
+                } as TBaseErrorDTOData
             }
         }
 
@@ -71,7 +71,7 @@ export default class KernelFileRepository implements FileRepositoryOutputPort {
                 data: {
                     operation: "kp#upload",
                     message: `Error getting signed URL from Kernel. Message: ${JSON.stringify(signedUrlDTO)}`,
-                } as BaseErrorDTOData
+                } as TBaseErrorDTOData
             }
         }
 
@@ -86,7 +86,7 @@ export default class KernelFileRepository implements FileRepositoryOutputPort {
                     data: {
                         operation: "kp#upload",
                         message: `Error uploading file to signed URL. Status Code: ${response.status} ${response.statusText}`,
-                    } as BaseErrorDTOData
+                    } as TBaseErrorDTOData
                 }
             }
             const remoteFile: RemoteFile = {
@@ -106,7 +106,7 @@ export default class KernelFileRepository implements FileRepositoryOutputPort {
                 data: {
                     operation: "kp#upload",
                     message: `Error uploading file to signed URL. ${err.message}`,
-                } as BaseErrorDTOData
+                } as TBaseErrorDTOData
             }
         }
 
