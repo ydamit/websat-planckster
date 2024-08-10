@@ -1,10 +1,12 @@
 import { z } from "zod";
 
-import { ClientService as sdk } from "@maany_shr/kernel-planckster-sdk-ts";
+import { ClientService as sdk, type NewConversationViewModel } from "@maany_shr/kernel-planckster-sdk-ts";
 import { createTRPCRouter, protectedProcedure } from "~/lib/infrastructure/server/trpc/server";
 import serverContainer from "../../config/ioc/server-container";
 import type AuthGatewayOutputPort from "~/lib/core/ports/secondary/auth-gateway-output-port";
-import { GATEWAYS } from "../../config/ioc/server-ioc-symbols";
+import { GATEWAYS, KERNEL } from "../../config/ioc/server-ioc-symbols";
+import type { TBaseErrorDTOData } from "~/sdk/core/dto";
+import type { TKernelSDK } from "../../config/kernel/kernel-sdk";
 
 export const conversationRouter = createTRPCRouter({
     list: protectedProcedure
@@ -19,19 +21,42 @@ export const conversationRouter = createTRPCRouter({
         const kpCredentialsDTO = await authGateway.extractKPCredentials();
 
         if (!kpCredentialsDTO.success) {
-            return [];
+            console.error(`Failed to get KP credentials. Dumping DTO: ${kpCredentialsDTO.data.message}`);
+            return {
+                success: false,
+                data: {
+                    operation: "conversationRouter#list",
+                    message: "Failed to get KP credentials",
+                } as TBaseErrorDTOData
+            };
         }
 
-        const viewModel = await sdk.listConversations({
+        const kernelSDK: TKernelSDK = serverContainer.get(KERNEL.KERNEL_SDK);
+
+        const listConversationsViewModel = await kernelSDK.listConversations({
             id: input.id,
             xAuthToken: kpCredentialsDTO.data.xAuthToken,
         });
-        if(viewModel.status) {
-            const conversations = viewModel.conversations
-            return conversations;
+
+        if(listConversationsViewModel.status) {
+            const conversations = listConversationsViewModel.conversations
+            return {
+                success: true,
+                data: conversations,
+            };
         }
-        // TODO: check if error can be handled, otherwise change KP's presenter
-        return [];
+
+        console.error(
+            `Failed to get signed URL for upload. Dumping view model: ${listConversationsViewModel.errorMessage}`
+        );
+        return {
+            success: false,
+            data: {
+                operation: "conversationRouter#list",
+                message: `Failed to list messages for Research Context with ID ${input.id}`,
+            } as TBaseErrorDTOData
+        }; // TODO: clean this, return a proper error DTO or a view model probably
+
     }),
 
     create: protectedProcedure
@@ -41,24 +66,46 @@ export const conversationRouter = createTRPCRouter({
                 title: z.string(),
             }),
         )
-        .mutation(async ({ input }) => {
+        .mutation(async ({ input }): Promise<{
+            success: true,
+            data: NewConversationViewModel
+        } | {
+            success: false,
+            data: TBaseErrorDTOData
+        }> => {
 
             const authGateway = serverContainer.get<AuthGatewayOutputPort>(GATEWAYS.AUTH_GATEWAY);
             const kpCredentialsDTO = await authGateway.extractKPCredentials();
 
             if (!kpCredentialsDTO.success) {
-                return {};
+                return {
+                    success: false,
+                    data: {
+                        operation: "conversationRouter#create",
+                        message: "Failed to get KP credentials",
+                    } as TBaseErrorDTOData
+                };
             }
 
-            const viewModel = await sdk.createConversation({
+            const newConversationViewModel = await sdk.createConversation({
                 id: input.id,
                 xAuthToken: kpCredentialsDTO.data.xAuthToken,
                 conversationTitle: input.title,
             });
-            if(viewModel.status) {
-                return viewModel;
+
+            if(newConversationViewModel.status) {
+                return {
+                    success: true,
+                    data: newConversationViewModel
+                };
             }
-            // TODO: check if error can be handled, otherwise change KP's presenter
-            return {};
+
+            return {
+                success: false,
+                data: {
+                    operation: "conversationRouter#create",
+                    message: newConversationViewModel.errorMessage,
+                } as TBaseErrorDTOData
+            };
         }),
 });

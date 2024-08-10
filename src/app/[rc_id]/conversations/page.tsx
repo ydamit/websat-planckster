@@ -25,9 +25,10 @@ async function ListConversations({ rc_id }: { rc_id: string }) {
   });
 
   return (
-    <ListConversationsPage
-      conversations={conversations}
-      kernelPlancksterHost={env.KP_HOST! as string}
-    />
+    <div></div>
+    // <ListConversationsPage
+      // conversations={conversations.data}
+      // kernelPlancksterHost={env.KP_HOST! as string}
+    // />
   );
 }
