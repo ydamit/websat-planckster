@@ -24,18 +24,18 @@ export default async function ListResearchContexts() {
   );
   const isConnected = await api.kernel.healthCheck.ping({});
   const isAuthorizedKPUser = kpCredentialsDTO.success;
-  let researchContexts: ResearchContext[] = [];
+  // let researchContexts: ResearchContext[] = [];
 
-  if (isConnected && isAuthorizedKPUser) {
-    researchContexts = await api.kernel.researchContext.list();
-  }
+  // if (isConnected && isAuthorizedKPUser) {
+  //   researchContexts = await api.kernel.researchContext.list();
+  // }
 
   return (
     <div>
-      <ListResearchContextsPage
+      {/*<ListResearchContextsPage
         researchContexts={researchContexts}
         kernelPlancksterHost={env.KP_HOST! as string}
-      />
+      />*/}
     </div>
   );
 }
