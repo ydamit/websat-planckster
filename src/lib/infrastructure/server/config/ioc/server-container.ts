@@ -22,6 +22,13 @@ import CreateConversationController from "../../controller/create-conversation-c
 import ListConversationsController from "../../controller/list-conversations-controller";
 import ListMessagesForConversationController from "../../controller/list-messages-for-conversation-controller";
 import ListSourceDataController from "../../controller/list-source-data-controller";
+import { ListSourceDataInputPort } from "~/lib/core/ports/primary/list-source-data-primary-ports";
+import { USECASE_FACTORY } from "~/lib/infrastructure/server/config/ioc/server-ioc-symbols";
+import { TSignal } from "~/lib/core/entity/signals";
+import { TListSourceDataViewModel } from "~/lib/core/view-models/list-source-data-view-models";
+import ListSourceDataPresenter from "../../presenter/list-source-data-presenter";
+import ListSourceDataUseCase from "~/lib/core/usecase/list-source-data-usecase";
+import SourceDataGatewayOutputPort from "~/lib/core/ports/secondary/source-data-gateway-output-port";
 
 const serverContainer = new Container();
 
@@ -68,5 +75,17 @@ serverContainer.bind(CONTROLLERS.LIST_RESEARCH_CONTEXTS_CONTROLLER).to(ListResea
 serverContainer.bind(CONTROLLERS.LIST_SOURCE_DATA_CONTROLLER).to(ListSourceDataController)
 
 
-
+serverContainer
+    .bind<interfaces.Factory<ListSourceDataInputPort>>(
+        USECASE_FACTORY.LIST_SOURCE_DATA_USECASE_FACTORY
+    )
+    .toFactory<ListSourceDataInputPort, [TSignal<TListSourceDataViewModel>]>((context: interfaces.Context) =>
+        (response: TSignal<TListSourceDataViewModel>) => {
+            const loggerFactory = context.container.get<(module: string) => Logger>(UTILS.LOGGER_FACTORY);
+            const presenter = new ListSourceDataPresenter(response, loggerFactory);
+            const sourceDataGateway = context.container.get<SourceDataGatewayOutputPort>(GATEWAYS.KERNEL_SOURCE_DATA_GATEWAY);
+            const usecase = new ListSourceDataUseCase(presenter, sourceDataGateway);
+            return usecase;
+        }
+    );
 export default serverContainer;

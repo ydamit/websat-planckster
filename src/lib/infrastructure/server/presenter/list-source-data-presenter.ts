@@ -1,16 +1,22 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
+import { Logger } from "pino";
 import { type TSignal } from "~/lib/core/entity/signals";
 import { type ListSourceDataOutputPort } from "~/lib/core/ports/primary/list-source-data-primary-ports";
-import { type TListSourceDataSuccessResponse, type TListSourceDataErrorResponse } from "~/lib/core/usecase-models/list-source-data-view-models";
+import { type TListSourceDataSuccessResponse, type TListSourceDataErrorResponse } from "~/lib/core/usecase-models/list-source-data-usecase-models";
 import { type TListSourceDataViewModel } from "~/lib/core/view-models/list-source-data-view-models";
 
 export default class ListSourceDataPresenter implements ListSourceDataOutputPort<TSignal<TListSourceDataViewModel>> {
+    private logger: Logger;
     response: TSignal<TListSourceDataViewModel>;
-    constructor(response: TSignal<TListSourceDataViewModel>) {
+    constructor(response: TSignal<TListSourceDataViewModel>, loggerFactory: (module: string) => Logger) {
+        this.logger = loggerFactory("ListSourceDataPresenter");
         this.response = response;
     }
 
     presentSuccess(success: TListSourceDataSuccessResponse): void {
+        if (success.type === "partial") {
+            this.logger.error({success}, `Partial success in listing source data, listing failed files. ${success.failedFiles}`);
+        }
         this.response.update({
             status: "success",
             sourceData: success.sourceData
