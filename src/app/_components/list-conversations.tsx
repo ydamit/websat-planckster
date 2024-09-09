@@ -9,14 +9,13 @@ import clientContainer from "~/lib/infrastructure/client/config/ioc/client-conta
 import { CONTROLLERS } from "~/lib/infrastructure/client/config/ioc/client-ioc-symbols";
 import type BrowserListConversationsController from "~/lib/infrastructure/client/controller/browser-list-conversations-controller";
 import type { TBrowserListConversationsControllerParameters } from "~/lib/infrastructure/client/controller/browser-list-conversations-controller";
-import { Button } from "@maany_shr/rage-ui-kit";
 import type { TCreateConversationViewModel } from "~/lib/core/view-models/create-conversation-view-model";
 import type BrowserCreateConversationController from "~/lib/infrastructure/client/controller/browser-create-conversation-controller";
 import type { TBrowserCreateConversationControllerParameters } from "~/lib/infrastructure/client/controller/browser-create-conversation-controller";
 import { ConversationAGGrid } from '@maany_shr/rage-ui-kit';
-import type { ConversationRow } from 'node_modules/@maany_shr/rage-ui-kit/dist/components/table/ConversationAGGrid';
+import { useRouter } from "next/navigation";
 
-// TODO: look at one of the ralph pages
+
 export function ListConversationsClientPage(props: { viewModel: TListConversationsViewModel; researchContextID: number }) {
 
   const [listConversationsViewModel, setListConversationsViewModel] = useState<TListConversationsViewModel>(props.viewModel);
@@ -79,26 +78,37 @@ export function ListConversationsClientPage(props: { viewModel: TListConversatio
     mutation.mutate(title);
   };
 
+  const router = useRouter();
+
+  const handleGoToConversation = (conversationID: number) => {
+    console.log("Going to conversation with ID: ", conversationID);
+    router.push(`${props.researchContextID}/conversations/${conversationID}`);
+  }
+
   return (
-    <div className="flex flex-col items-center justify-between">
-      {enableCreateConversation && <CreateConversationButton onCreateConversation={handleCreateConversation} />}
-      <div className="p-4 w-screen">
+      <div className="w-screen">
         {listConversationsViewModel.status === "success" && (
-          <ConversationAGGrid rowData={listConversationsViewModel.conversations as ConversationRow[]} />
+          <ConversationAGGrid 
+            isLoading={isFetching || isLoading}
+            rowData={listConversationsViewModel.conversations}
+            handleGoToConversation={handleGoToConversation}
+            handleNewConversation={handleCreateConversation}
+            newConversationIsEnabled={enableCreateConversation}
+            />
         )}
-        {listConversationsViewModel.status === "error" && <div>Error VM: {JSON.stringify(listConversationsViewModel)}</div>}
+        {listConversationsViewModel.status === "error" && (
+          <ConversationAGGrid
+            isLoading={false}
+            rowData={[]}
+            handleGoToConversation={handleGoToConversation}
+            handleNewConversation={handleCreateConversation}
+            newConversationIsEnabled={enableCreateConversation}
+            errorOverlayProps={{
+              errorStatus: true,
+              overlayText: `Error: ${JSON.stringify(listConversationsViewModel)}`,
+            }}
+          />
+          )}
       </div>
-    </div>
   );
 }
-
-const CreateConversationButton = (props: { onCreateConversation: (title: string) => void }) => {
-  return (
-    <Button
-      label="Create New Conversation"
-      onClick={() => {
-        props.onCreateConversation("Conny Cucumber");
-      }}
-    />
-  );
-};
