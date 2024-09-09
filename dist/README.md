@@ -53,6 +53,27 @@ docker run -d --name websat-planckster \
     --mount type=bind,source=$(pwd)/dist/ca.pem,target=/etc/dad/ca.pem \
     maany/websat-planckster
 ```
+For running in http mode, use the following command. In this case TLS termination is done by an external loadbalancer:
+
+```bash
+docker run -d --name websat-planckster \
+    --hostname localhost \
+    --name websat-planckster \
+    -e OPENAI_API_KEY=sk-something \
+    -e HTTPD_ENABLE_SSL=False \
+    -e PRIMARY_USER_USERNAME=admin \
+    -e PRIMARY_USER_PASSWORD=admin \
+    -e SECONDARY_USER_USERNAME=guest \
+    -e SECONDARY_USER_PASSWORD=guest \
+    -e NEXTAUTH_SECRET="secret-1239899*@$%" \
+    -e NEXTAUTH_URL=http://0.0.0.0:80 \
+    -e HTTPD_ENABLE_LOGS=True \
+    -e KP_HOST=http://0.0.0.0:8000 \
+    -e KP_AUTH_TOKEN=test123 \
+    -e KP_CLIENT_ID=1 \
+    -p 80:80 -p 443:443 \
+    maany/websat-planckster
+```
 
 ## Minimal Configuration
 You must set the following environment variables to run the container:

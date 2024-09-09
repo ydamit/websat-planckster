@@ -16,9 +16,9 @@ RUN python3 -m pip install --no-cache-dir j2cli
 
 RUN rm -rf /etc/httpd/conf.d/ssl.conf
 
-ENV NVM_DIR /home/sda/.nvm
+ENV NVM_DIR=/home/sda/.nvm
 RUN mkdir -p $NVM_DIR
-ENV NODE_VERSION 20.4.0
+ENV NODE_VERSION=20.4.0
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash \
     && . $NVM_DIR/nvm.sh \
     && nvm install $NODE_VERSION \
