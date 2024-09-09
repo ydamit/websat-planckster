@@ -37,6 +37,8 @@ import { type ListMessagesForConversationInputPort } from "~/lib/core/ports/prim
 import { type TListMessagesForConversationViewModel } from "~/lib/core/view-models/list-messages-for-conversation-view-model";
 import ListMessagesForConversationPresenter from "../../presenter/list-messages-for-conversation-presenter";
 import ListMessagesForConversationUsecase from "~/lib/core/usecase/list-messages-for-conversation-usecase";
+import { TListSourceDataViewModel } from "~/lib/core/view-models/list-source-data-view-models";
+import ListSourceDataPresenter from "../../presenter/list-source-data-presenter";
 
 const serverContainer = new Container();
 
@@ -114,5 +116,14 @@ serverContainer
   });
 
 // ListSourceDataUsecase
+serverContainer
+  .bind<interfaces.Factory<ListSourceDataInputPort>>(USECASE_FACTORY.LIST_SOURCE_DATA)
+  .toFactory<ListSourceDataInputPort, [Signal<TListSourceDataViewModel>]>((context: interfaces.Context) => (response: Signal<TListSourceDataViewModel>) => {
+    const sourceDataGateway = context.container.get<KernelSourceDataGateway>(GATEWAYS.KERNEL_SOURCE_DATA_GATEWAY);
+    const loggerFactory = context.container.get<(module: string) => Logger>(UTILS.LOGGER_FACTORY);
+    const presenter = new ListSourceDataPresenter(response, loggerFactory);
+    const usecase = new ListSourceDataUsecase(presenter, sourceDataGateway);
+    return usecase;
+  });
 
 export default serverContainer;
