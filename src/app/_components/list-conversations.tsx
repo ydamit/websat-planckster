@@ -18,11 +18,15 @@ import type { ConversationRow } from 'node_modules/@maany_shr/rage-ui-kit/dist/c
 
 // TODO: look at one of the ralph pages
 export function ListConversationsClientPage(props: { viewModel: TListConversationsViewModel; researchContextID: number }) {
+
   const [listConversationsViewModel, setListConversationsViewModel] = useState<TListConversationsViewModel>(props.viewModel);
+
   const [createConversationViewModel, setCreateConversationViewModel] = useState<TCreateConversationViewModel>({
     status: "request",
   } as TCreateConversationViewModel);
+
   const queryClient = useQueryClient();
+
   const { isFetching, isLoading, isError } = useQuery<Signal<TListConversationsViewModel>>({
     queryKey: [`list-conversations#${props.researchContextID}`],
     queryFn: async () => {
@@ -69,6 +73,7 @@ export function ListConversationsClientPage(props: { viewModel: TListConversatio
       await controller.execute(controllerParameters);
     },
   });
+
   const handleCreateConversation = (title: string) => {
     console.log("Creating conversation with title: ", title);
     mutation.mutate(title);

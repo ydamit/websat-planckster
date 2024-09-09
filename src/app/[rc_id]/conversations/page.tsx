@@ -22,7 +22,9 @@ export default async function ListConversationsServerPage({ params }: { params: 
 
   // Initialize the conversations to show on page load
   const controller = serverContainer.get<ListConversationsController>(CONTROLLERS.LIST_CONVERSATIONS_CONTROLLER);
+
   const signalFactory = signalsContainer.get<(initialValue: TListConversationsViewModel, update?: (value: TListConversationsViewModel) => void) => Signal<TListConversationsViewModel>>(SIGNAL_FACTORY.KERNEL_LIST_CONVERSATIONS);
+
   const response: Signal<TListConversationsViewModel> = signalFactory({
     status: "request",
   });
