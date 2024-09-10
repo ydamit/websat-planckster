@@ -1,7 +1,7 @@
 "use client";
 
 import { SourceDataAGGrid } from "@maany_shr/rage-ui-kit";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRef, useState } from "react";
 import { Signal } from "~/lib/core/entity/signals";
 import { TFileUploadViewModel } from "~/lib/core/view-models/file-upload-view-model";
@@ -9,6 +9,7 @@ import { TListSourceDataViewModel } from "~/lib/core/view-models/list-source-dat
 import clientContainer from "~/lib/infrastructure/client/config/ioc/client-container";
 import { CONTROLLERS } from "~/lib/infrastructure/client/config/ioc/client-ioc-symbols";
 import BrowserFileUploadController, { TBrowserFileUploadControllerParameters } from "~/lib/infrastructure/client/controller/browser-file-upload-controller";
+import BrowserListSourceDataController, { TBrowserListSourceDataControllerParameters } from "~/lib/infrastructure/client/controller/browser-list-source-data-controller";
 import signalsContainer from "~/lib/infrastructure/common/signals-container";
 import { SIGNAL_FACTORY } from "~/lib/infrastructure/common/signals-ioc-container";
 
@@ -18,7 +19,28 @@ export function ListSourceDataForClientClientPage(props: { viewModel: TListSourc
     status: "request",
   } as TFileUploadViewModel);
 
+  const [listSourceDataViewModel, setListSourceDataViewModel] = useState<TListSourceDataViewModel>(props.viewModel);
+
   const queryClient = useQueryClient();
+
+  const { isFetching, isLoading, isError } = useQuery<Signal<TListSourceDataViewModel>>({
+    queryKey: ["list-source-data"],
+    queryFn: async () => {
+      const signalFactory = signalsContainer.get<(initialValue: TListSourceDataViewModel, update?: (value: TListSourceDataViewModel) => void) => Signal<TListSourceDataViewModel>>(SIGNAL_FACTORY.KERNEL_LIST_SOURCE_DATA);
+      const response: Signal<TListSourceDataViewModel> = signalFactory(
+        {
+          status: "request",
+        },
+        setListSourceDataViewModel,
+      );
+      const controllerParameters: TBrowserListSourceDataControllerParameters = {
+        response: response,
+      };
+      const controller = clientContainer.get<BrowserListSourceDataController>(CONTROLLERS.LIST_SOURCE_DATA_CONTROLLER);
+      await controller.execute(controllerParameters);
+      return response;
+    },
+  });
 
   const mutation = useMutation({
     mutationKey: ["upload-source-data"],
@@ -74,16 +96,16 @@ export function ListSourceDataForClientClientPage(props: { viewModel: TListSourc
   const isUploading = mutation.isPending
 
 
-  if (props.viewModel.status === "request") {
+  if (listSourceDataViewModel.status === "request") {
     return (
       <div>
         <SourceDataAGGrid isLoading={true} isUploading={false} rowData={[]} handleDownloadSourceData={handleDownloadSourceData} handleUploadSourceData={handleUploadSourceData} />
       </div>
     );
-  } else if (props.viewModel.status === "success") {
+  } else if (listSourceDataViewModel.status === "success") {
     return (
       <div>
-        <SourceDataAGGrid isLoading={false} isUploading={isUploading} rowData={props.viewModel.sourceData} handleDownloadSourceData={handleDownloadSourceData} handleUploadSourceData={handleUploadSourceData} />
+        <SourceDataAGGrid isLoading={false} isUploading={isUploading} rowData={listSourceDataViewModel.sourceData} handleDownloadSourceData={handleDownloadSourceData} handleUploadSourceData={handleUploadSourceData} />
 
         <input
           type="file"
