@@ -2,7 +2,7 @@ module.exports = {
     apps: [
         {
             name: "websat-planckster",
-            script: "npm run build && npm start",
+            script: "npm run dev",
             env: {
                 NODE_ENV: "production",
                 PRIMARY_USER_USERNAME: "{{ PRIMARY_USER_USERNAME }}",
@@ -15,5 +15,5 @@ module.exports = {
                 OPENAI_API_KEY: "{{ OPENAI_API_KEY }}",
             },
         },
-    ],
+    ], 
 };
