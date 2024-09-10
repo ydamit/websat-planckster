@@ -13,6 +13,7 @@ import { conversationRouter } from "./routers/controller/conversation-router";
 import { messageRouter } from "./routers/controller/message-router";
 import { sourceDataRouter as sourceDataControllerRouter } from "./routers/controller/source-data";
 import { sourceDataRouter as sourceDataGatewayRouter } from "./routers/gateway/source-data";
+import { researchContextGatewayRouter } from "./routers/gateway/research-context";
 
 /**
  * This is the primary router for your server.
@@ -27,6 +28,8 @@ export const appRouter = createTRPCRouter({
   },
   gateways : {
     sourceData: sourceDataGatewayRouter,
+    researchContext: researchContextGatewayRouter,
+
   },
   kernel: {
     researchContext: researchContextRouter,

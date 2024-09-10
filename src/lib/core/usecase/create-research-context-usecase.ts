@@ -31,46 +31,46 @@ export default class CreateResearchContextUsecase implements CreateResearchConte
             )
             return;
         }
-        const researchContextID = createResearchContextDTO.data.id
-        const researchContextName = createResearchContextDTO.data.title
-        const researchContextDescription = createResearchContextDTO.data.description
+        // const researchContextID = createResearchContextDTO.data.id
+        // const researchContextName = createResearchContextDTO.data.title
+        // const researchContextDescription = createResearchContextDTO.data.description
 
-        this.presenter.presentProgress({
-            status: "research-context-created-in-backend",
-            message: `Registered a research context titled ${request.title}. Creating vector store...`,
-            context: createResearchContextDTO
-        })
+        // this.presenter.presentProgress({
+        //     status: "research-context-created-in-backend",
+        //     message: `Registered a research context titled ${request.title}. Creating vector store...`,
+        //     context: createResearchContextDTO
+        // })
 
-        const createVectorStoreDTO = await this.vectorStore.createVectorStore(researchContextID, request.sourceDataList);
+        // const createVectorStoreDTO = await this.vectorStore.createVectorStore(researchContextID, request.sourceDataList);
         
-        if (!createVectorStoreDTO.success) {
-            this.presenter.presentError(
-                {
-                    operation: "usecase#create-research-context",
-                    message: "Failed to create vector store for the provided files. Check again later.",
-                    context: createVectorStoreDTO
-                }
-            )
-            return;
-        }
-        const vectorStoreID = createVectorStoreDTO.data.id;
-        this.presenter.presentProgress({
-            status: "vector-store-created",
-            message: "Vector store created. Registering agents...",
-            context: createVectorStoreDTO
-        })
+        // if (!createVectorStoreDTO.success) {
+        //     this.presenter.presentError(
+        //         {
+        //             operation: "usecase#create-research-context",
+        //             message: "Failed to create vector store for the provided files. Check again later.",
+        //             context: createVectorStoreDTO
+        //         }
+        //     )
+        //     return;
+        // }
+        // const vectorStoreID = createVectorStoreDTO.data.id;
+        // this.presenter.presentProgress({
+        //     status: "vector-store-created",
+        //     message: "Vector store created. Registering agents...",
+        //     context: createVectorStoreDTO
+        // })
 
-        const createAgentDTO = await this.agentGateway.createAgent(researchContextID, researchContextName, researchContextDescription, vectorStoreID);
-        if (!createAgentDTO.success) {
-            this.presenter.presentError(
-                {
-                    operation: "usecase#create-research-context",
-                    message: "Failed to create an agent. Check again later.",
-                    context: createAgentDTO
-                }
-            )
-            return;
-        }
+        // const createAgentDTO = await this.agentGateway.createAgent(researchContextID, researchContextName, researchContextDescription, vectorStoreID);
+        // if (!createAgentDTO.success) {
+        //     this.presenter.presentError(
+        //         {
+        //             operation: "usecase#create-research-context",
+        //             message: "Failed to create an agent. Check again later.",
+        //             context: createAgentDTO
+        //         }
+        //     )
+        //     return;
+        // }
 
         this.presenter.presentSuccess({
             researchContext: createResearchContextDTO.data,

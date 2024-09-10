@@ -39,6 +39,7 @@ import ListMessagesForConversationPresenter from "../../presenter/list-messages-
 import ListMessagesForConversationUsecase from "~/lib/core/usecase/list-messages-for-conversation-usecase";
 import { type TListSourceDataViewModel } from "~/lib/core/view-models/list-source-data-view-models";
 import ListSourceDataPresenter from "../../presenter/list-source-data-presenter";
+import KernelResearchContextGateway from "../../gateway/kernel-research-context-gateway";
 
 const serverContainer = new Container();
 
@@ -69,6 +70,7 @@ serverContainer.bind(KERNEL.KERNEL_SDK).toConstantValue(KernelSDK);
 serverContainer.bind(GATEWAYS.AGENT_GATEWAY).to(OpenAIAgentGateway);
 serverContainer.bind(GATEWAYS.KERNEL_CONVERSATION_GATEWAY).to(KernelConversationGateway);
 serverContainer.bind(GATEWAYS.KERNEL_SOURCE_DATA_GATEWAY).to(KernelSourceDataGateway);
+serverContainer.bind(GATEWAYS.KERNEL_RESEARCH_CONTEXT_GATEWAY).to(KernelResearchContextGateway);
 serverContainer.bind(GATEWAYS.RESEARCH_CONTEXT_GATEWAY).to(ResearchContextGateway);
 serverContainer.bind(GATEWAYS.VECTOR_STORE_GATEWAY).to(OpenAIVectorStoreGateway);
 
