@@ -31,6 +31,7 @@ export const MessageSchema = z.object({
     content: z.string(),
     message_contents: z.array(MessageContentSchema),
     sender: z.string(),
+    senderType: z.union([z.literal("user"), z.literal("agent")]),
 });
 
 export type TMessage = z.infer<typeof MessageSchema>;
