@@ -7,7 +7,7 @@ import { Logger } from "pino";
 import type AuthGatewayOutputPort from "~/lib/core/ports/secondary/auth-gateway-output-port";
 import { type TKernelSDK } from "../config/kernel/kernel-sdk";
 import { TBaseErrorDTOData } from "~/sdk/core/dto";
-import { ListMessagesViewModel_Input, MessageBase as KernelPlancksterMessageBase, NewMessageViewModel } from "@maany_shr/kernel-planckster-sdk-ts";
+import { ListMessagesViewModel_Input, MessageBase_Input as KernelPlancksterMessageBase, NewMessageViewModel } from "@maany_shr/kernel-planckster-sdk-ts";
 
 
 @injectable()
@@ -148,8 +148,7 @@ export default class KernelConversationGateway implements ConversationGatewayOut
       const createMessageViewModel: NewMessageViewModel = await this.kernelSDK.createMessage({
         xAuthToken: kpCredentialsDTO.data.xAuthToken,
         id: conversationID,
-        messageContent: message.content,
-        unixTimestamp: message.timestamp,
+        requestBody: message.message_contents,
         senderType: message.sender
       })
 
@@ -171,8 +170,7 @@ export default class KernelConversationGateway implements ConversationGatewayOut
         data: {
           message: {
             id: createMessageViewModel.message_id,
-            content: message.content,
-            timestamp: message.timestamp,
+            message_contents: message.message_contents,
             sender: message.sender,
             senderType: message.senderType,
           },
@@ -180,8 +178,7 @@ export default class KernelConversationGateway implements ConversationGatewayOut
           conversationID: conversationID,
           response: {  // TODO: this shouldn't be needed here, so is doing this OK?
             id: -1,
-            content: "",
-            timestamp: message.timestamp,
+            message_contents: message.message_contents,
             sender: message.sender,
             senderType: message.senderType,
           }
