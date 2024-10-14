@@ -14,11 +14,22 @@ export const ConversationSchema = z.object({
 });
 export type TConversation = z.infer<typeof ConversationSchema>;
 
+export const BaseMessageContentSchema = z.object({
+    content: z.string(),
+    content_type: z.enum(["text", "image", "citation"]),
+});
+export type TBaseMessageContent = z.infer<typeof BaseMessageContentSchema>;
+
+export const MessageContentSchema = z.object({
+    id: z.number(),
+    BaseMessageContentSchema,
+});
+export type TMessageContent = z.infer<typeof MessageContentSchema>;
 
 export const BaseMessageSchema = z.object({
     id: z.number(),
     content: z.string(),
-    timestamp: z.string(),
+    message_contents: z.array(MessageContentSchema),
     sender: z.string(),
 });
 

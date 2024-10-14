@@ -160,8 +160,7 @@ export default class KernelConversationGateway implements ConversationGatewayOut
         const messages: TMessage[] = kpMessages.map((kpMessage) => {
           return {
             id: kpMessage.id,
-            content: kpMessage.content,
-            timestamp: kpMessage.timestamp,
+            message_contents: kpMessage.message_contents,
             sender: kpMessage.sender,
             senderType: kpMessage.sender_type,
           };
