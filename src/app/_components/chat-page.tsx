@@ -127,10 +127,10 @@ export function ChatClientPage(props: { listMessagesViewModel: TListMessagesForC
       <ChatPage
         messages={listMessagesViewModel.messages.map((message) => {
           return {
-            role: message.senderType,
-            content: message.content,
+            role: message.sender_type,
+            message_contents: message.message_contents,
             type: "text", // TODO: fix this after KP has been refactored
-            timestamp: Number(message.timestamp),
+            timestamp: Number(message.created_at),
             isLoading: false,
           };
         })}

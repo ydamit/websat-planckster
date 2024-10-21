@@ -37,7 +37,7 @@ export default async function ChatServerPage({ params }: { params: { rc_id: stri
 
   const researchContextsDTOs = listResearchContextsDTO.data;
   const researchContextIDs = researchContextsDTOs.map((rcDTO) => rcDTO.success ? rcDTO.data.id : -1);
-  if (!researchContextIDs.includes(researchContextID)) {
+  if (!researchContextIDs.includes(researchContextID)) { 
     notFound();
   }
 

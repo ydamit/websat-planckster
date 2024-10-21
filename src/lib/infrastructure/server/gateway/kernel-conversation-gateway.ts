@@ -172,7 +172,7 @@ export default class KernelConversationGateway implements ConversationGatewayOut
             id: createMessageViewModel.message_id,
             message_contents: message.message_contents,
             sender: message.sender,
-            senderType: message.senderType,
+            sender_type: message.sender_type,
           },
           type: "success",
           conversationID: conversationID,
@@ -180,7 +180,7 @@ export default class KernelConversationGateway implements ConversationGatewayOut
             id: -1,
             message_contents: message.message_contents,
             sender: message.sender,
-            senderType: message.senderType,
+            sender_type: message.sender_type,
           }
         },
       };
@@ -228,7 +228,8 @@ export default class KernelConversationGateway implements ConversationGatewayOut
             id: kpMessage.id,
             message_contents: kpMessage.message_contents,
             sender: kpMessage.sender,
-            senderType: kpMessage.sender_type,
+            sender_type: kpMessage.sender_type,
+            created_at: kpMessage.created_at,
           };
         });
 

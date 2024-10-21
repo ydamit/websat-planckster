@@ -21,7 +21,7 @@ export default class BrowserSendMessageToConversationUseCase implements SendMess
       content: request.messageToSendContent,
       sender: "", // TODO: this should be obtained from the auth gateway at some point
       timestamp: request.messageToSendTimestamp,
-      senderType: "user"
+      sender_type: "user"
     };
 
     // TODO: finish secondary side, then come back here
